@@ -1,7 +1,4 @@
-const checkStringLength = (string, value) => {
-  const result = string.length <= value;
-  return result;
-};
+const checkStringLength = (string, value) => string.length <= value;
 
 checkStringLength('проверяемая строка', 20);
 
