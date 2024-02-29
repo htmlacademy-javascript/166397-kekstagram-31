@@ -8,7 +8,7 @@ checkStringLength('проверяемая строка', 20);
 // // Строка длиннее 10 символов
 // console.log(checkStringLength('проверяемая строка', 10)); // false
 
-const checkStringPalindrome = (string) => {
+const isPalindrome = (string) => {
   const formattedString = string.toLowerCase().replaceAll(' ', '');
   let backString = '';
   for (let i = formattedString.length - 1; i >= 0; i--) {
@@ -18,7 +18,7 @@ const checkStringPalindrome = (string) => {
   return formattedString === backString;
 };
 
-checkStringPalindrome('Лёша на полке клопа нашёл ');
+isPalindrome('Лёша на полке клопа нашёл ');
 // console.log(checkStringPalindrome('Лёша на полке клопа нашёл '));
 
 const getNumber = (value) => {
