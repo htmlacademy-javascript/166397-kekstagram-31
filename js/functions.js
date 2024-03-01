@@ -44,12 +44,13 @@ getNumber('2023 год');
 // console.log(getNumber(-1));
 // console.log(getNumber(1.5));
 
+const convertsTimeToMinutes = (time) => {
+  const splitTime = time.split(':');
+  const formattedTime = splitTime.map((unit) => getNumber(unit));
+  return formattedTime[0] * 60 + formattedTime[1];
+};
+
 const checkMeetingTime = (workBeginingTime, workEndTime, meetingBeginingTime, meetingDuration) => {
-  const convertsTimeToMinutes = (time) => {
-    const splitTime = time.split(':');
-    const formattedTime = splitTime.map((unit) => getNumber(unit));
-    return formattedTime[0] * 60 + formattedTime[1];
-  };
   const workBeginingTimeInMinutes = convertsTimeToMinutes(workBeginingTime);
   const workEndTimeInMinutes = convertsTimeToMinutes(workEndTime);
   const meetingBeginingTimeInMinutes = convertsTimeToMinutes(meetingBeginingTime);
