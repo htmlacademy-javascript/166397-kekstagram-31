@@ -1,4 +1,4 @@
-import './photo-modal.js';
+import {onThumbnailsListRender} from './photo-modal.js';
 import {renderThumbnails} from './render-thumbnails.js';
 
-renderThumbnails();
+renderThumbnails(onThumbnailsListRender);
