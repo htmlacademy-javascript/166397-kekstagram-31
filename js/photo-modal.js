@@ -14,6 +14,7 @@ const commentTemplate = document.querySelector('#comment').content.querySelector
 const commentsFragment = document.createDocumentFragment();
 const commentsList = modalPhoto.querySelector('.social__comments');
 const photoCaption = modalPhoto.querySelector('.social__caption');
+const MIN_SHOWN_COMMENTS = 5;
 
 const getThumbnailbyId = (id, thubnailsArray) => {
   id = parseInt(id, 10);
@@ -42,11 +43,12 @@ const renderComments = (commentsArray) => {
 
 const renderModal = ({url, likes, description, comments}) => {
   bigPhoto.src = url;
+  bigPhoto.alt = description;
   likesCount.textContent = likes;
-  if (comments.length < 5) {
+  if (comments.length < MIN_SHOWN_COMMENTS) {
     shownCommentsCount.textContent = comments.length;
   } else {
-    shownCommentsCount.textContent = 5;
+    shownCommentsCount.textContent = MIN_SHOWN_COMMENTS;
   }
 
   totalCommentsCount.textContent = comments.length;
