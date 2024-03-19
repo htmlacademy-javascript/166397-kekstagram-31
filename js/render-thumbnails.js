@@ -1,4 +1,5 @@
 import {createPhotos} from './create-photos.js';
+import {onThumbnailClick} from './photo-modal.js';
 
 const thumbnailsList = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -6,7 +7,7 @@ const thumbnailTemplate = document.querySelector('#picture').content.querySelect
 const thumbnails = createPhotos();
 const thumbnailsFragment = document.createDocumentFragment();
 
-const renderThumbnails = (callback) => {
+const renderThumbnails = () => {
   thumbnails.forEach(({id, url, description, likes, comments}) => {
     const thumbnail = thumbnailTemplate.cloneNode(true);
     const thumbnailsImage = thumbnail.querySelector('.picture__img');
@@ -20,7 +21,7 @@ const renderThumbnails = (callback) => {
     thumbnailsFragment.append(thumbnail);
   });
   thumbnailsList.append(thumbnailsFragment);
-  callback();
+  thumbnailsList.addEventListener('click', onThumbnailClick);
 };
 
 export {renderThumbnails, thumbnailsList, thumbnails};

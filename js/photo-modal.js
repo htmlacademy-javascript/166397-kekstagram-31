@@ -1,4 +1,4 @@
-import {thumbnailsList, thumbnails} from './render-thumbnails.js';
+import {thumbnails} from './render-thumbnails.js';
 import {isEscapeKey} from './util.js';
 
 const body = document.querySelector('body');
@@ -7,14 +7,15 @@ const modalCloseButton = modalPhoto.querySelector('.big-picture__cancel');
 const bigPhoto = modalPhoto.querySelector('.big-picture__img img');
 const likesCount = modalPhoto.querySelector('.likes-count');
 const commentsCount = modalPhoto.querySelector('.social__comment-count');
-const shownCommentsCount = modalPhoto.querySelector('.social__comment-shown-count');
-const totalCommentsCount = modalPhoto.querySelector('.social__comment-total-count');
+const shownCommentsCount = commentsCount.querySelector('.social__comment-shown-count');
+const totalCommentsCount = commentsCount.querySelector('.social__comment-total-count');
 const commentsLoader = modalPhoto.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
-const commentsFragment = document.createDocumentFragment();
 const commentsList = modalPhoto.querySelector('.social__comments');
 const photoCaption = modalPhoto.querySelector('.social__caption');
 const MIN_SHOWN_COMMENTS = 5;
+let commentsForRender = [];
+let startCommentCount = 0;
 
 const getThumbnailbyId = (id, thubnailsArray) => {
   id = parseInt(id, 10);
@@ -26,11 +27,14 @@ const getThumbnailbyId = (id, thubnailsArray) => {
 };
 
 const clearCommentsList = () => {
+  startCommentCount = 0;
   commentsList.innerHTML = '';
 };
 
-const renderComments = (commentsArray) => {
-  commentsArray.forEach(({avatar, message, name}) => {
+const renderNextComments = () => {
+  const commentsFragment = document.createDocumentFragment();
+  const newArray = commentsForRender.slice(startCommentCount, startCommentCount + MIN_SHOWN_COMMENTS);
+  newArray.forEach(({avatar, message, name}) => {
     const comment = commentTemplate.cloneNode(true);
     const commentAvatar = comment.querySelector('.social__picture');
     commentAvatar.src = avatar;
@@ -39,6 +43,18 @@ const renderComments = (commentsArray) => {
     commentsFragment.append(comment);
   });
   commentsList.append(commentsFragment);
+  startCommentCount += MIN_SHOWN_COMMENTS;
+  shownCommentsCount.textContent = startCommentCount;
+  if (commentsList.children.length === commentsForRender.length) {
+    shownCommentsCount.textContent = commentsList.children.length;
+    commentsLoader.classList.add('hidden');
+  }
+};
+
+const renderComments = (commentsArray) => {
+  commentsForRender = commentsArray;
+  renderNextComments();
+  commentsLoader.addEventListener('click', renderNextComments);
 };
 
 const renderModal = ({url, likes, description, comments}) => {
@@ -52,11 +68,13 @@ const renderModal = ({url, likes, description, comments}) => {
   }
 
   totalCommentsCount.textContent = comments.length;
-  clearCommentsList();
-  renderComments(comments);
+
+  if (comments.length !== 0) {
+    renderComments(comments);
+  } else {
+    commentsLoader.classList.add('hidden');
+  }
   photoCaption.textContent = description;
-  commentsCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
 };
 
 const onThumbnailClick = (evt) => {
@@ -82,6 +100,7 @@ function openModalPhoto() {
   modalCloseButton.addEventListener('click', closeModalPhoto);
   document.addEventListener('keydown', onDocumentKeydown);
   body.classList.add('modal-open');
+  commentsLoader.classList.remove('hidden');
 }
 
 function closeModalPhoto() {
@@ -92,8 +111,4 @@ function closeModalPhoto() {
   clearCommentsList();
 }
 
-const addsEventListenerOnThumbnails = () => {
-  thumbnailsList.addEventListener('click', onThumbnailClick);
-};
-
-export {addsEventListenerOnThumbnails};
+export {onThumbnailClick};
