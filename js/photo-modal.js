@@ -1,4 +1,4 @@
-import {thumbnailsList, thumbnails} from './render-thumbnails.js';
+import {thumbnails} from './render-thumbnails.js';
 import {isEscapeKey} from './util.js';
 
 const body = document.querySelector('body');
@@ -27,6 +27,7 @@ const getThumbnailbyId = (id, thubnailsArray) => {
 };
 
 const clearCommentsList = () => {
+  startCommentCount = 0;
   commentsList.innerHTML = '';
 };
 
@@ -44,7 +45,7 @@ const renderNextComments = () => {
   commentsList.append(commentsFragment);
   startCommentCount += MIN_SHOWN_COMMENTS;
   shownCommentsCount.textContent = startCommentCount;
-  if (startCommentCount > commentsList.children.length) {
+  if (commentsList.children.length === commentsForRender.length) {
     shownCommentsCount.textContent = commentsList.children.length;
     commentsLoader.classList.add('hidden');
   }
@@ -57,7 +58,6 @@ const renderComments = (commentsArray) => {
 };
 
 const renderModal = ({url, likes, description, comments}) => {
-  startCommentCount = 0;
   bigPhoto.src = url;
   bigPhoto.alt = description;
   likesCount.textContent = likes;
@@ -69,7 +69,11 @@ const renderModal = ({url, likes, description, comments}) => {
 
   totalCommentsCount.textContent = comments.length;
 
-  renderComments(comments);
+  if (comments.length !== 0) {
+    renderComments(comments);
+  } else {
+    commentsLoader.classList.add('hidden');
+  }
   photoCaption.textContent = description;
 };
 
@@ -107,8 +111,4 @@ function closeModalPhoto() {
   clearCommentsList();
 }
 
-const addsEventListenerOnThumbnails = () => {
-  thumbnailsList.addEventListener('click', onThumbnailClick);
-};
-
-export {addsEventListenerOnThumbnails};
+export {onThumbnailClick};
