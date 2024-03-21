@@ -33,8 +33,8 @@ const clearCommentsList = () => {
 
 const renderNextComments = () => {
   const commentsFragment = document.createDocumentFragment();
-  const newArray = commentsForRender.slice(startCommentCount, startCommentCount + MIN_SHOWN_COMMENTS);
-  newArray.forEach(({avatar, message, name}) => {
+  const nextComments = commentsForRender.slice(startCommentCount, startCommentCount + MIN_SHOWN_COMMENTS);
+  nextComments.forEach(({avatar, message, name}) => {
     const comment = commentTemplate.cloneNode(true);
     const commentAvatar = comment.querySelector('.social__picture');
     commentAvatar.src = avatar;
@@ -111,4 +111,4 @@ function closeModalPhoto() {
   clearCommentsList();
 }
 
-export {onThumbnailClick};
+export {onThumbnailClick, body};
