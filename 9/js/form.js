@@ -117,7 +117,7 @@ const getErrorMessage = () => {
   }
 };
 
-pristine.addValidator(modalForm.querySelector('.text__hashtags'), validateHashtag, getErrorMessage);
+pristine.addValidator(inputHashtag, validateHashtag, getErrorMessage);
 
 const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
 
