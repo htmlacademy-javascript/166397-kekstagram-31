@@ -1,3 +1,5 @@
+const body = document.querySelector('body');
+
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
   const upper = Math.floor(Math.max(min, max));
@@ -14,7 +16,7 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     let currentValue = getRandomInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
       // eslint-disable-next-line no-console
-      console.error(`Перебраны все числа из диапазона от ${ min } до ${ max}`);
+      console.error(`Перебраны все числа из диапазона от ${ min } до ${ max }`);
       return null;
     }
     while (previousValues.includes(currentValue)) {
@@ -27,4 +29,14 @@ const createRandomIdFromRangeGenerator = (min, max) => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey};
+const openModalElement = (modalElement) => {
+  modalElement.classList.remove('hidden');
+  body.classList.add('modal-open');
+};
+
+const closeModalElement = (modalElement) => {
+  modalElement.classList.add('hidden');
+  body.classList.remove('modal-open');
+};
+
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, openModalElement, closeModalElement};

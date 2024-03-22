@@ -1,7 +1,6 @@
 import {thumbnails} from './render-thumbnails.js';
-import {isEscapeKey} from './util.js';
+import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
 
-const body = document.querySelector('body');
 const modalPhoto = document.querySelector('.big-picture');
 const modalCloseButton = modalPhoto.querySelector('.big-picture__cancel');
 const bigPhoto = modalPhoto.querySelector('.big-picture__img img');
@@ -33,8 +32,8 @@ const clearCommentsList = () => {
 
 const renderNextComments = () => {
   const commentsFragment = document.createDocumentFragment();
-  const newArray = commentsForRender.slice(startCommentCount, startCommentCount + MIN_SHOWN_COMMENTS);
-  newArray.forEach(({avatar, message, name}) => {
+  const nextComments = commentsForRender.slice(startCommentCount, startCommentCount + MIN_SHOWN_COMMENTS);
+  nextComments.forEach(({avatar, message, name}) => {
     const comment = commentTemplate.cloneNode(true);
     const commentAvatar = comment.querySelector('.social__picture');
     commentAvatar.src = avatar;
@@ -96,18 +95,16 @@ const onDocumentKeydown = (evt) => {
 };
 
 function openModalPhoto() {
-  modalPhoto.classList.remove('hidden');
+  openModalElement(modalPhoto);
   modalCloseButton.addEventListener('click', closeModalPhoto);
   document.addEventListener('keydown', onDocumentKeydown);
-  body.classList.add('modal-open');
   commentsLoader.classList.remove('hidden');
 }
 
 function closeModalPhoto() {
-  modalPhoto.classList.add('hidden');
+  closeModalElement(modalPhoto);
   modalCloseButton.removeEventListener('click', closeModalPhoto);
   document.removeEventListener('keydown', onDocumentKeydown);
-  body.classList.remove('modal-open');
   clearCommentsList();
 }
 
