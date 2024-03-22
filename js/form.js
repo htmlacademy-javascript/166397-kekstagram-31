@@ -1,6 +1,6 @@
 import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
 import {onFormSubmit} from './validate-form.js';
-import {onButtonSmallerClick, onButtonBiggerClick, onFilterChange} from './edit-photo';
+import {onButtonSmallerClick, onButtonBiggerClick, onFilterChange} from './edit-photo.js';
 
 const downloadForm = document.querySelector('.img-upload__form');
 const modalForm = downloadForm.querySelector('.img-upload__overlay');
