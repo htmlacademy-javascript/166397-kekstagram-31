@@ -27,7 +27,7 @@ const checkUniqueHashtags = (hashtagsArray) => hashtagsArray.every((element, ind
 
 const checkHashtagsLength = (hashtagsArray) => hashtagsArray.length <= MAX_HASHTAG_COUNT;
 
-const convertsHashtagsToArray = () => inputHashtag.value.trim().toLowerCase().split(' ');
+const convertsHashtagsToArray = () => inputHashtag.value.trim().toLowerCase().replace(/  +/g, ' ').split(' ');
 
 const validateHashtag = () => {
   const hashtags = convertsHashtagsToArray();
