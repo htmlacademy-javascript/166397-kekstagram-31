@@ -27,8 +27,10 @@ const checkUniqueHashtags = (hashtagsArray) => hashtagsArray.every((element, ind
 
 const checkHashtagsLength = (hashtagsArray) => hashtagsArray.length <= MAX_HASHTAG_COUNT;
 
+const convertsHashtagsToArray = () => inputHashtag.value.trim().toLowerCase().split(' ');
+
 const validateHashtag = () => {
-  const hashtags = inputHashtag.value.trim().split(' ');
+  const hashtags = convertsHashtagsToArray();
 
   const isArrayOfHashtags = checkArrayOfHashtags(hashtags);
   const isUniqueHashtags = checkUniqueHashtags(hashtags);
@@ -38,7 +40,7 @@ const validateHashtag = () => {
 };
 
 const getErrorMessage = () => {
-  const hashtags = inputHashtag.value.trim().split(' ');
+  const hashtags = convertsHashtagsToArray();
 
   const isArrayOfHashtags = checkArrayOfHashtags(hashtags);
   const isUniqueHashtags = checkUniqueHashtags(hashtags);
