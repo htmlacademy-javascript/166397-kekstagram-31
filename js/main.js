@@ -1,3 +1,5 @@
 import {renderThumbnails} from './render-thumbnails.js';
-import './form.js';
+import {registerFileDownloadControlEvent} from './form.js';
+
 renderThumbnails();
+registerFileDownloadControlEvent();

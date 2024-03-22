@@ -1,7 +1,6 @@
 import {thumbnails} from './render-thumbnails.js';
-import {isEscapeKey} from './util.js';
+import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
 
-const body = document.querySelector('body');
 const modalPhoto = document.querySelector('.big-picture');
 const modalCloseButton = modalPhoto.querySelector('.big-picture__cancel');
 const bigPhoto = modalPhoto.querySelector('.big-picture__img img');
@@ -96,19 +95,17 @@ const onDocumentKeydown = (evt) => {
 };
 
 function openModalPhoto() {
-  modalPhoto.classList.remove('hidden');
+  openModalElement(modalPhoto);
   modalCloseButton.addEventListener('click', closeModalPhoto);
   document.addEventListener('keydown', onDocumentKeydown);
-  body.classList.add('modal-open');
   commentsLoader.classList.remove('hidden');
 }
 
 function closeModalPhoto() {
-  modalPhoto.classList.add('hidden');
+  closeModalElement(modalPhoto);
   modalCloseButton.removeEventListener('click', closeModalPhoto);
   document.removeEventListener('keydown', onDocumentKeydown);
-  body.classList.remove('modal-open');
   clearCommentsList();
 }
 
-export {onThumbnailClick, body};
+export {onThumbnailClick};
