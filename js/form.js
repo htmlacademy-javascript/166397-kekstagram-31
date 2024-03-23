@@ -12,7 +12,6 @@ const buttonSmaller = modalForm.querySelector('.scale__control--smaller');
 const buttonBigger = modalForm.querySelector('.scale__control--bigger');
 const sliderContainer = modalForm.querySelector('.img-upload__effect-level');
 const filters = modalForm.querySelectorAll('[name="effect"]');
-const scaleValue = modalForm.querySelector('.scale__control--value');
 const photo = modalForm.querySelector('.img-upload__preview img');
 
 const onFileDownloadControlChange = () => {
@@ -38,11 +37,6 @@ const onFieldKeydown = (evt) => {
 
 const onFieldFocus = (evt) => {
   evt.target.addEventListener('keydown', onFieldKeydown);
-};
-
-const resetScale = () => {
-  scaleValue.value = '100%';
-  photo.style = '';
 };
 
 function openModalForm() {
@@ -78,7 +72,7 @@ function closeModalForm() {
   sliderContainer.classList.remove('hidden');
 
   fileDownloadControl.value = '';
-  resetScale();
+  photo.style = '';
 
   inputHashtag.removeEventListener('focus', onFieldFocus);
   commentField.removeEventListener('focus', onFieldFocus);
