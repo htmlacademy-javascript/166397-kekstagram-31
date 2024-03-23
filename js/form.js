@@ -2,9 +2,9 @@ import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
 import {onFormSubmit} from './validate-form.js';
 import {onButtonSmallerClick, onButtonBiggerClick, onFilterChange} from './edit-photo.js';
 
-const downloadForm = document.querySelector('.img-upload__form');
-const modalForm = downloadForm.querySelector('.img-upload__overlay');
-const fileDownloadControl = downloadForm.querySelector('.img-upload__input');
+const uploadForm = document.querySelector('.img-upload__form');
+const modalForm = uploadForm.querySelector('.img-upload__overlay');
+const fileDownloadControl = uploadForm.querySelector('.img-upload__input');
 const formCloseButton = modalForm.querySelector('.img-upload__cancel');
 const inputHashtag = modalForm.querySelector('.text__hashtags');
 const commentField = modalForm.querySelector('.text__description');
@@ -41,7 +41,7 @@ const onFieldFocus = (evt) => {
 function openModalForm() {
   openModalElement(modalForm);
 
-  downloadForm.addEventListener('submit', onFormSubmit);
+  uploadForm.addEventListener('submit', onFormSubmit);
   filters.forEach((filter) => {
     filter.addEventListener('change', onFilterChange);
   });
@@ -59,7 +59,7 @@ function openModalForm() {
 function closeModalForm() {
   closeModalElement(modalForm);
 
-  downloadForm.removeEventListener('submit', onFormSubmit);
+  uploadForm.removeEventListener('submit', onFormSubmit);
   filters.forEach((filter) => {
     filter.removeEventListener('change', onFilterChange);
   });

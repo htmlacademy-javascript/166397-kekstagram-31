@@ -1,5 +1,5 @@
-const downloadForm = document.querySelector('.img-upload__form');
-const modalForm = downloadForm.querySelector('.img-upload__overlay');
+const uploadForm = document.querySelector('.img-upload__form');
+const modalForm = uploadForm.querySelector('.img-upload__overlay');
 const inputHashtag = modalForm.querySelector('.text__hashtags');
 const commentField = modalForm.querySelector('.text__description');
 const MAX_COMMENT_LENGTH = 140;
@@ -14,7 +14,7 @@ const ERROR_HASHTAG_MESSAGES = {
 
 const ERROR_COMMENT_MESSAGE = 'длина комментария больше 140 символов';
 
-const pristine = new Pristine(downloadForm, {
+const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextTag: 'div',
@@ -27,20 +27,20 @@ const checkUniqueHashtags = (hashtagsArray) => hashtagsArray.every((element, ind
 
 const checkHashtagsLength = (hashtagsArray) => hashtagsArray.length <= MAX_HASHTAG_COUNT;
 
-const convertsHashtagsToArray = () => inputHashtag.value.trim().toLowerCase().replace(/  +/g, ' ').split(' ');
+const convertsHashtagsToArray = (value) => value.trim().toLowerCase().replace(/  +/g, ' ').split(' ');
 
-const validateHashtag = () => {
-  const hashtags = convertsHashtagsToArray();
+const validateHashtag = (value) => {
+  const hashtags = convertsHashtagsToArray(value);
 
   const isArrayOfHashtags = checkArrayOfHashtags(hashtags);
   const isUniqueHashtags = checkUniqueHashtags(hashtags);
   const isAllowableLength = checkHashtagsLength(hashtags);
 
-  return (isArrayOfHashtags && isUniqueHashtags && isAllowableLength) || !inputHashtag.value;
+  return (isArrayOfHashtags && isUniqueHashtags && isAllowableLength) || !value;
 };
 
-const getErrorMessage = () => {
-  const hashtags = convertsHashtagsToArray();
+const getErrorMessage = (value) => {
+  const hashtags = convertsHashtagsToArray(value);
 
   const isArrayOfHashtags = checkArrayOfHashtags(hashtags);
   const isUniqueHashtags = checkUniqueHashtags(hashtags);
@@ -49,7 +49,7 @@ const getErrorMessage = () => {
   if (!isAllowableLength) {
     return ERROR_HASHTAG_MESSAGES.HASHTAG_NUMBER_EXCEEDED;
   }
-  if (!isArrayOfHashtags && inputHashtag.value) {
+  if (!isArrayOfHashtags && value) {
     return ERROR_HASHTAG_MESSAGES.INVALID_HASHTAG;
   }
   if (!isUniqueHashtags) {

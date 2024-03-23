@@ -1,5 +1,5 @@
-const downloadForm = document.querySelector('.img-upload__form');
-const modalForm = downloadForm.querySelector('.img-upload__overlay');
+const uploadForm = document.querySelector('.img-upload__form');
+const modalForm = uploadForm.querySelector('.img-upload__overlay');
 const scaleValue = modalForm.querySelector('.scale__control--value');
 const photo = modalForm.querySelector('.img-upload__preview img');
 const sliderContainer = modalForm.querySelector('.img-upload__effect-level');
@@ -86,16 +86,8 @@ noUiSlider.create(slider, {
   step: DEFAULT_SLIDER_STEP,
   connect: 'lower',
   format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-
-    from: function (value) {
-      return parseFloat(value);
-    }
+    to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
+    from: (value) => parseFloat(value),
   }
 });
 
@@ -112,6 +104,7 @@ function onFilterChange() {
       step: FILTERS_VALUE[this.value].STEP,
     });
 
+    slider.noUiSlider.off('update');
     slider.noUiSlider.on('update', () => {
       photo.style.filter = FILTERS_VALUE[this.value].FILTER();
       effectInput.value = Number(slider.noUiSlider.get());
