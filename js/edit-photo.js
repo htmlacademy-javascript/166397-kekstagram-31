@@ -68,7 +68,13 @@ const onButtonBiggerClick = () => {
   const currentValue = parseInt(scaleValue.value, 10);
   if (currentValue < MAX_SCALE_VALUE) {
     const newValue = currentValue + STEP_SCALE_VALUE;
-    photo.style.transform = (newValue < MAX_SCALE_VALUE) ? `scale(0.${newValue})` : 'scale(1)';
+    scaleValue.value = `${newValue}%`;
+    if (newValue < MAX_SCALE_VALUE) {
+      photo.style.transform = `scale(0.${newValue})`;
+    } else {
+      photo.style.transform = 'scale(1)';
+    }
+    // photo.style.transform = (newValue < MAX_SCALE_VALUE) ? `scale(0.${newValue})` : 'scale(1)';
   }
 };
 
