@@ -53,28 +53,23 @@ const FILTERS_VALUE = {
 };
 
 const onButtonSmallerClick = () => {
-  const currentValue = parseInt(scaleValue.value, 10);
-  if (currentValue > MIN_SCALE_VALUE) {
-    let newValue = currentValue - STEP_SCALE_VALUE;
-    if (newValue < MIN_SCALE_VALUE) {
-      newValue = MIN_SCALE_VALUE;
+  const currentScaleValue = parseInt(scaleValue.value, 10);
+  if (currentScaleValue > MIN_SCALE_VALUE) {
+    let newScaleValue = currentScaleValue - STEP_SCALE_VALUE;
+    if (newScaleValue < MIN_SCALE_VALUE) {
+      newScaleValue = MIN_SCALE_VALUE;
     }
-    scaleValue.value = `${newValue}%`;
-    photo.style.transform = `scale(0.${newValue})`;
+    scaleValue.value = `${newScaleValue}%`;
+    photo.style.transform = `scale(0.${newScaleValue})`;
   }
 };
 
 const onButtonBiggerClick = () => {
-  const currentValue = parseInt(scaleValue.value, 10);
-  if (currentValue < MAX_SCALE_VALUE) {
-    const newValue = currentValue + STEP_SCALE_VALUE;
-    scaleValue.value = `${newValue}%`;
-    if (newValue < MAX_SCALE_VALUE) {
-      photo.style.transform = `scale(0.${newValue})`;
-    } else {
-      photo.style.transform = 'scale(1)';
-    }
-    // photo.style.transform = (newValue < MAX_SCALE_VALUE) ? `scale(0.${newValue})` : 'scale(1)';
+  const currentScaleValue = parseInt(scaleValue.value, 10);
+  if (currentScaleValue < MAX_SCALE_VALUE) {
+    const newScaleValue = currentScaleValue + STEP_SCALE_VALUE;
+    scaleValue.value = `${newScaleValue}%`;
+    photo.style.transform = (newScaleValue < MAX_SCALE_VALUE) ? `scale(0.${newScaleValue})` : 'scale(1)';
   }
 };
 
