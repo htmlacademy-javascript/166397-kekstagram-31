@@ -91,8 +91,8 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
-const onDocumentKeydown = () => {
-  if (isEscapeKey) {
+const onDocumentKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
     closeInfoModal();
   }
 };
