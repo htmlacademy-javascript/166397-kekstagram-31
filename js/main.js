@@ -2,7 +2,8 @@ import {renderThumbnails} from './render-thumbnails.js';
 import {registerFileDownloadControlEvent, closeModalForm} from './form.js';
 import {setUserFormSubmit} from './validate-form.js';
 import {getData} from './api.js';
-import {showAlertGet, saveThumbnails} from './util.js';
+import {showAlertGet} from './util.js';
+import {saveThumbnails} from './photo-modal.js';
 
 getData().then((photos) => {
   saveThumbnails(photos);

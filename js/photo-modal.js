@@ -1,4 +1,4 @@
-import {isEscapeKey, openModalElement, closeModalElement, thumbnails} from './util.js';
+import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
 
 const modalPhoto = document.querySelector('.big-picture');
 const modalCloseButton = modalPhoto.querySelector('.big-picture__cancel');
@@ -14,6 +14,11 @@ const photoCaption = modalPhoto.querySelector('.social__caption');
 const MIN_SHOWN_COMMENTS = 5;
 let commentsForRender = [];
 let startCommentCount = 0;
+let thumbnails = [];
+
+const saveThumbnails = (photosArray) => {
+  thumbnails = photosArray;
+};
 
 const getThumbnailbyId = (id, thubnailsArray) => {
   id = parseInt(id, 10);
@@ -107,4 +112,4 @@ function closeModalPhoto() {
   clearCommentsList();
 }
 
-export {onThumbnailClick};
+export {onThumbnailClick, saveThumbnails};
