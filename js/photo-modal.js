@@ -1,5 +1,4 @@
-import {thumbnails} from './render-thumbnails.js';
-import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
+import {isEscapeKey, openModalElement, closeModalElement, thumbnails} from './util.js';
 
 const modalPhoto = document.querySelector('.big-picture');
 const modalCloseButton = modalPhoto.querySelector('.big-picture__cancel');

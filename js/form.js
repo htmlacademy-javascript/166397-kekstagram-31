@@ -1,6 +1,7 @@
 import {isEscapeKey, openModalElement, closeModalElement} from './util.js';
-import {onFormSubmit} from './validate-form.js';
-import {onButtonSmallerClick, onButtonBiggerClick, onFilterChange} from './edit-photo.js';
+import {addValidator, removeValidator} from './validate-form.js';
+import {onButtonSmallerClick, onButtonBiggerClick} from './scale-photo.js';
+import {onFilterChange, createNoUiSlider, destroyNoUiSlider} from './filter-photo.js';
 
 const uploadForm = document.querySelector('.img-upload__form');
 const modalForm = uploadForm.querySelector('.img-upload__overlay');
@@ -23,7 +24,8 @@ const onCloseModalButtonClick = () => {
 };
 
 const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
+  const infoModal = document.querySelector('.error');
+  if (isEscapeKey(evt) && !infoModal) {
     evt.preventDefault();
     closeModalForm();
   }
@@ -42,7 +44,6 @@ const onFieldFocus = (evt) => {
 function openModalForm() {
   openModalElement(modalForm);
 
-  uploadForm.addEventListener('submit', onFormSubmit);
   filters.forEach((filter) => {
     filter.addEventListener('change', onFilterChange);
   });
@@ -55,12 +56,15 @@ function openModalForm() {
 
   inputHashtag.addEventListener('focus', onFieldFocus);
   commentField.addEventListener('focus', onFieldFocus);
+
+  addValidator();
+  createNoUiSlider();
+
 }
 
 function closeModalForm() {
   closeModalElement(modalForm);
 
-  uploadForm.removeEventListener('submit', onFormSubmit);
   filters.forEach((filter) => {
     filter.removeEventListener('change', onFilterChange);
   });
@@ -71,15 +75,18 @@ function closeModalForm() {
 
   sliderContainer.classList.remove('hidden');
 
-  fileDownloadControl.value = '';
-  photo.style = '';
-
   inputHashtag.removeEventListener('focus', onFieldFocus);
   commentField.removeEventListener('focus', onFieldFocus);
+
+  removeValidator();
+  destroyNoUiSlider();
+
+  photo.style = '';
+  uploadForm.reset();
 }
 
 const registerFileDownloadControlEvent = () => {
   fileDownloadControl.addEventListener('change', onFileDownloadControlChange);
 };
 
-export {registerFileDownloadControlEvent};
+export {registerFileDownloadControlEvent, openModalForm, closeModalForm};
