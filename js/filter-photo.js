@@ -1,14 +1,9 @@
 const uploadForm = document.querySelector('.img-upload__form');
 const modalForm = uploadForm.querySelector('.img-upload__overlay');
-const scaleValue = modalForm.querySelector('.scale__control--value');
 const photo = modalForm.querySelector('.img-upload__preview img');
 const sliderContainer = modalForm.querySelector('.img-upload__effect-level');
 const effectInput = modalForm.querySelector('.effect-level__value');
 const slider = modalForm.querySelector('.effect-level__slider');
-
-const MIN_SCALE_VALUE = 25;
-const MAX_SCALE_VALUE = 100;
-const STEP_SCALE_VALUE = 25;
 
 const DEFAULT_SLIDER_MIN = 0;
 const DEFAULT_SLIDER_MAX = 100;
@@ -52,42 +47,28 @@ const FILTERS_VALUE = {
   }
 };
 
-const onButtonSmallerClick = () => {
-  const currentScaleValue = parseInt(scaleValue.value, 10);
-  if (currentScaleValue > MIN_SCALE_VALUE) {
-    let newScaleValue = currentScaleValue - STEP_SCALE_VALUE;
-    if (newScaleValue < MIN_SCALE_VALUE) {
-      newScaleValue = MIN_SCALE_VALUE;
+const createNoUiSlider = () => {
+  noUiSlider.create(slider, {
+    range: {
+      min: DEFAULT_SLIDER_MIN,
+      max: DEFAULT_SLIDER_MAX,
+    },
+    start: DEFAULT_SLIDER_START,
+    step: DEFAULT_SLIDER_STEP,
+    connect: 'lower',
+    format: {
+      to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
+      from: (value) => parseFloat(value),
     }
-    scaleValue.value = `${newScaleValue}%`;
-    photo.style.transform = `scale(0.${newScaleValue})`;
-  }
+  });
 };
 
-const onButtonBiggerClick = () => {
-  const currentScaleValue = parseInt(scaleValue.value, 10);
-  if (currentScaleValue < MAX_SCALE_VALUE) {
-    const newScaleValue = currentScaleValue + STEP_SCALE_VALUE;
-    scaleValue.value = `${newScaleValue}%`;
-    photo.style.transform = (newScaleValue < MAX_SCALE_VALUE) ? `scale(0.${newScaleValue})` : 'scale(1)';
-  }
+const destroyNoUiSlider = () => {
+  slider.noUiSlider.destroy();
 };
-
-noUiSlider.create(slider, {
-  range: {
-    min: DEFAULT_SLIDER_MIN,
-    max: DEFAULT_SLIDER_MAX,
-  },
-  start: DEFAULT_SLIDER_START,
-  step: DEFAULT_SLIDER_STEP,
-  connect: 'lower',
-  format: {
-    to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
-    from: (value) => parseFloat(value),
-  }
-});
 
 function onFilterChange() {
+  slider.noUiSlider.off('update');
   if (this.value !== 'none') {
     sliderContainer.classList.remove('hidden');
 
@@ -100,7 +81,6 @@ function onFilterChange() {
       step: FILTERS_VALUE[this.value].STEP,
     });
 
-    slider.noUiSlider.off('update');
     slider.noUiSlider.on('update', () => {
       photo.style.filter = FILTERS_VALUE[this.value].FILTER();
       effectInput.value = Number(slider.noUiSlider.get());
@@ -111,4 +91,4 @@ function onFilterChange() {
   }
 }
 
-export {onButtonSmallerClick, onButtonBiggerClick, onFilterChange};
+export {onFilterChange, createNoUiSlider, destroyNoUiSlider};
