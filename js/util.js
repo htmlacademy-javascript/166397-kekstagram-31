@@ -6,6 +6,7 @@ const errorGetFragment = document.createDocumentFragment();
 const successGetTemplate = document.querySelector('#success').content.querySelector('.success');
 const successGetFragment = document.createDocumentFragment();
 const ALERT_GET_SHOWTIME = 5000;
+const filters = document.querySelector('.img-filters');
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
@@ -32,6 +33,22 @@ const createRandomIdFromRangeGenerator = (min, max) => {
     previousValues.push(currentValue);
     return currentValue;
   };
+};
+
+const getRandomArrayElements = (array, count) => {
+  if (array.length < count) {
+    count = array.length;
+  }
+  const previousValues = [];
+
+  while (previousValues.length < count) {
+    let currentValue = getRandomArrayElement(array);
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomArrayElement(array);
+    }
+    previousValues.push(currentValue);
+  }
+  return previousValues;
 };
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
@@ -71,4 +88,22 @@ const showSuccessSend = () => {
   body.append(success);
 };
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, openModalElement, closeModalElement, showAlertSend, showAlertGet, showSuccessSend};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+const setFiltersClick = (cb) => {
+  filters.addEventListener('click', (evt) => {
+    if (evt.target.matches('.img-filters__button')) {
+      cb();
+    }
+  });
+};
+
+
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, openModalElement, closeModalElement, showAlertSend, showAlertGet, showSuccessSend, getRandomArrayElements, debounce, setFiltersClick};
