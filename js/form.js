@@ -14,9 +14,19 @@ const buttonBigger = modalForm.querySelector('.scale__control--bigger');
 const sliderContainer = modalForm.querySelector('.img-upload__effect-level');
 const filters = modalForm.querySelectorAll('[name="effect"]');
 const photo = modalForm.querySelector('.img-upload__preview img');
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const onFileDownloadControlChange = () => {
   openModalForm();
+
+  const file = fileDownloadControl.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
+
+  if (matches) {
+    photo.src = URL.createObjectURL(file);
+  }
 };
 
 const onCloseModalButtonClick = () => {
