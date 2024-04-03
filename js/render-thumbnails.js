@@ -7,9 +7,10 @@ const thumbnailsFragment = document.createDocumentFragment();
 
 const renderThumbnails = (thumbnails) => {
   const currentThumbnails = thumbnailsList.querySelectorAll('.picture');
-  for (const currentThumbnail of currentThumbnails) {
-    currentThumbnail.remove();
-  }
+
+  currentThumbnails.forEach((thumbnail) => {
+    thumbnail.remove();
+  });
 
   thumbnails.forEach(({id, url, description, likes, comments}) => {
     const thumbnail = thumbnailTemplate.cloneNode(true);
@@ -27,4 +28,4 @@ const renderThumbnails = (thumbnails) => {
   thumbnailsList.addEventListener('click', onThumbnailClick);
 };
 
-export {renderThumbnails, thumbnailsList};
+export {renderThumbnails};

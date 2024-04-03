@@ -1,24 +1,15 @@
-import {showAlertSend} from './util.js';
-import {sendData} from './api.js';
-import {showSuccessSend, isEscapeKey} from './util.js';
+import {isEscapeKey} from './util.js';
+import {uploadForm, modalForm} from './const.js';
 
-const uploadForm = document.querySelector('.img-upload__form');
-const modalForm = uploadForm.querySelector('.img-upload__overlay');
 const inputHashtag = modalForm.querySelector('.text__hashtags');
 const commentField = modalForm.querySelector('.text__description');
-const submitButton = modalForm.querySelector('#upload-submit');
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
 const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
 let pristine;
 let infoModal;
 
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SENDING: 'Отправляю...'
-};
-
-const ERROR_HASHTAG_MESSAGES = {
+const ErrorHashtagMessages = {
   INVALID_HASHTAG: 'введён невалидный хэштег',
   HASHTAG_REPEAT: 'хэштеги повторяются',
   HASHTAG_NUMBER_EXCEEDED: 'превышено количество хэштегов'
@@ -32,7 +23,7 @@ const checkUniqueHashtags = (hashtagsArray) => hashtagsArray.every((element, ind
 
 const checkHashtagsLength = (hashtagsArray) => hashtagsArray.length <= MAX_HASHTAG_COUNT;
 
-const convertsHashtagsToArray = (value) => value.trim().toLowerCase().replace(/  +/g, ' ').split(' ');
+const convertsHashtagsToArray = (value) => value.trim().toLowerCase().replace(/\s+/g, ' ').split(' ');
 
 const validateHashtag = (value) => {
   const hashtags = convertsHashtagsToArray(value);
@@ -52,13 +43,13 @@ const getErrorMessage = (value) => {
   const isAllowableLength = checkHashtagsLength(hashtags);
 
   if (!isAllowableLength) {
-    return ERROR_HASHTAG_MESSAGES.HASHTAG_NUMBER_EXCEEDED;
+    return ErrorHashtagMessages.HASHTAG_NUMBER_EXCEEDED;
   }
   if (!isArrayOfHashtags && value) {
-    return ERROR_HASHTAG_MESSAGES.INVALID_HASHTAG;
+    return ErrorHashtagMessages.INVALID_HASHTAG;
   }
   if (!isUniqueHashtags) {
-    return ERROR_HASHTAG_MESSAGES.HASHTAG_REPEAT;
+    return ErrorHashtagMessages.HASHTAG_REPEAT;
   }
 };
 
@@ -80,17 +71,6 @@ const removeValidator = () => {
   pristine.destroy();
 };
 
-
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
-};
-
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     closeInfoModal();
@@ -102,7 +82,7 @@ function closeInfoModal() {
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
-const registerEventsOnInfoModal = (resultSubmit) => {
+const setEventsOnInfoModal = (resultSubmit) => {
   infoModal = document.querySelector(`.${resultSubmit}`);
 
   document.addEventListener('keydown', onDocumentKeydown);
@@ -116,27 +96,6 @@ const registerEventsOnInfoModal = (resultSubmit) => {
   });
 };
 
-const setUserFormSubmit = (onSuccess) => {
-  uploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    let resultSubmit;
-    const isValidate = pristine.validate();
-    if (isValidate) {
-      resultSubmit = 'success';
-      blockSubmitButton();
-      sendData(new FormData(evt.target)).then(onSuccess).then(() => {
-        showSuccessSend();
-      })
-        .catch(() => {
-          showAlertSend();
-          resultSubmit = 'error';
-        })
-        .finally(() => {
-          unblockSubmitButton();
-          registerEventsOnInfoModal(resultSubmit);
-        });
-    }
-  });
-};
+const isFormValidate = () => pristine.validate();
 
-export {setUserFormSubmit, addValidator, removeValidator};
+export {addValidator, removeValidator, isFormValidate, setEventsOnInfoModal};

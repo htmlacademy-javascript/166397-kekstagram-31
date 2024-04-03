@@ -1,7 +1,8 @@
-const uploadForm = document.querySelector('.img-upload__form');
-const modalForm = uploadForm.querySelector('.img-upload__overlay');
+import {modalForm, photo} from './const.js';
+
 const scaleValue = modalForm.querySelector('.scale__control--value');
-const photo = modalForm.querySelector('.img-upload__preview img');
+const buttonSmaller = modalForm.querySelector('.scale__control--smaller');
+const buttonBigger = modalForm.querySelector('.scale__control--bigger');
 
 const MIN_SCALE_VALUE = 25;
 const MAX_SCALE_VALUE = 100;
@@ -28,4 +29,14 @@ const onButtonBiggerClick = () => {
   }
 };
 
-export {onButtonSmallerClick, onButtonBiggerClick};
+const initScale = () => {
+  buttonSmaller.addEventListener('click', onButtonSmallerClick);
+  buttonBigger.addEventListener('click', onButtonBiggerClick);
+};
+
+const deleteScale = () => {
+  buttonSmaller.removeEventListener('click', onButtonSmallerClick);
+  buttonBigger.removeEventListener('click', onButtonBiggerClick);
+};
+
+export {initScale, deleteScale};

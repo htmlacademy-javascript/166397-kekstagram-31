@@ -1,16 +1,17 @@
-const uploadForm = document.querySelector('.img-upload__form');
-const modalForm = uploadForm.querySelector('.img-upload__overlay');
-const photo = modalForm.querySelector('.img-upload__preview img');
+import {modalForm, photo} from './const.js';
+
 const sliderContainer = modalForm.querySelector('.img-upload__effect-level');
 const effectInput = modalForm.querySelector('.effect-level__value');
 const slider = modalForm.querySelector('.effect-level__slider');
+const filters = modalForm.querySelector('.effects__list');
 
 const DEFAULT_SLIDER_MIN = 0;
 const DEFAULT_SLIDER_MAX = 100;
 const DEFAULT_SLIDER_START = DEFAULT_SLIDER_MAX;
 const DEFAULT_SLIDER_STEP = 1;
+let currentFilter = 'none';
 
-const FILTERS_VALUE = {
+const FiltersValues = {
   'chrome': {
     MIN: 0,
     MAX: 1,
@@ -47,6 +48,39 @@ const FILTERS_VALUE = {
   }
 };
 
+const onFilterChange = (evt) => {
+  if (evt.target.matches('.effects__radio')) {
+    currentFilter = evt.target.value;
+    if (currentFilter !== 'none') {
+
+      sliderContainer.classList.remove('hidden');
+
+      slider.noUiSlider.updateOptions({
+        range: {
+          min: FiltersValues[currentFilter].MIN,
+          max: FiltersValues[currentFilter].MAX,
+        },
+        start: FiltersValues[currentFilter].MAX,
+        step: FiltersValues[currentFilter].STEP,
+      });
+    } else {
+      sliderContainer.classList.add('hidden');
+      photo.style.filter = '';
+    }
+  }
+};
+
+const destroyNoUiSlider = () => {
+  slider.noUiSlider.destroy();
+  filters.removeEventListener('change', onFilterChange);
+  sliderContainer.classList.remove('hidden');
+};
+
+const setNoUiSlider = () => {
+  filters.addEventListener('change', onFilterChange);
+  sliderContainer.classList.add('hidden');
+};
+
 const createNoUiSlider = () => {
   noUiSlider.create(slider, {
     range: {
@@ -61,34 +95,13 @@ const createNoUiSlider = () => {
       from: (value) => parseFloat(value),
     }
   });
+
+  slider.noUiSlider.on('update', () => {
+    photo.style.filter = FiltersValues[currentFilter]?.FILTER();
+    effectInput.value = Number(slider.noUiSlider.get());
+  });
+  setNoUiSlider();
 };
 
-const destroyNoUiSlider = () => {
-  slider.noUiSlider.destroy();
-};
-
-function onFilterChange() {
-  slider.noUiSlider.off('update');
-  if (this.value !== 'none') {
-    sliderContainer.classList.remove('hidden');
-
-    slider.noUiSlider.updateOptions({
-      range: {
-        min: FILTERS_VALUE[this.value].MIN,
-        max: FILTERS_VALUE[this.value].MAX,
-      },
-      start: FILTERS_VALUE[this.value].MAX,
-      step: FILTERS_VALUE[this.value].STEP,
-    });
-
-    slider.noUiSlider.on('update', () => {
-      photo.style.filter = FILTERS_VALUE[this.value].FILTER();
-      effectInput.value = Number(slider.noUiSlider.get());
-    });
-  } else {
-    sliderContainer.classList.add('hidden');
-    photo.style.filter = '';
-  }
-}
 
 export {onFilterChange, createNoUiSlider, destroyNoUiSlider};
