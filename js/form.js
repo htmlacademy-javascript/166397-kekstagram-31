@@ -3,23 +3,23 @@ import {addValidator, removeValidator, isFormValidate, setEventsOnInfoModal} fro
 import {initScale, deleteScale} from './scale-photo.js';
 import {createNoUiSlider, destroyNoUiSlider} from './filter-photo.js';
 import {sendData} from './api.js';
-import {uploadForm, modalForm, photo} from './const.js';
+import {uploadFormElement, modalFormElement, photoElement} from './const.js';
 
-const fileUploadControl = uploadForm.querySelector('.img-upload__input');
-const formCloseButton = modalForm.querySelector('.img-upload__cancel');
-const inputHashtag = modalForm.querySelector('.text__hashtags');
-const commentField = modalForm.querySelector('.text__description');
-const effectsPreviews = modalForm.querySelectorAll('.effects__preview');
-const submitButton = modalForm.querySelector('#upload-submit');
 const FILE_TYPES = ['jpg', 'jpeg', 'png'];
-
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SENDING: 'Отправляю...'
 };
 
+const fileUploadControlElement = uploadFormElement.querySelector('.img-upload__input');
+const formCloseButtonElement = modalFormElement.querySelector('.img-upload__cancel');
+const inputHashtagElement = modalFormElement.querySelector('.text__hashtags');
+const commentFieldElement = modalFormElement.querySelector('.text__description');
+const effectsPreviewsElements = modalFormElement.querySelectorAll('.effects__preview');
+const submitButtonElement = modalFormElement.querySelector('#upload-submit');
+
 const onFileUploadControlChange = () => {
-  const file = fileUploadControl.files[0];
+  const file = fileUploadControlElement.files[0];
   const fileType = file.type;
 
   const matches = FILE_TYPES.some((type) => fileType.endsWith(type));
@@ -27,12 +27,12 @@ const onFileUploadControlChange = () => {
   if (matches) {
     openModalForm();
     const fileURL = URL.createObjectURL(file);
-    photo.src = fileURL;
-    effectsPreviews.forEach((effectsPreview) => {
+    photoElement.src = fileURL;
+    effectsPreviewsElements.forEach((effectsPreview) => {
       effectsPreview.style.backgroundImage = `url(${fileURL})`;
     });
   } else {
-    fileUploadControl.value = '';
+    fileUploadControlElement.value = '';
     showToastAlert('Неверный формат изображения');
   }
 };
@@ -42,8 +42,8 @@ const onCloseModalButtonClick = () => {
 };
 
 const onDocumentKeydown = (evt) => {
-  const infoModal = document.querySelector('.error');
-  if (isEscapeKey(evt) && !infoModal) {
+  const infoModalElement = document.querySelector('.error');
+  if (isEscapeKey(evt) && !infoModalElement) {
     evt.preventDefault();
     closeModalForm();
   }
@@ -60,22 +60,22 @@ const onFieldFocus = (evt) => {
 };
 
 const resetFormData = () => {
-  photo.style = '';
-  photo.src = 'img/upload-default-image.jpg';
-  effectsPreviews.forEach((effectsPreview) => {
+  photoElement.style = '';
+  photoElement.src = 'img/upload-default-image.jpg';
+  effectsPreviewsElements.forEach((effectsPreview) => {
     effectsPreview.style.backgroundImage = '';
   });
-  uploadForm.reset();
+  uploadFormElement.reset();
 };
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = SubmitButtonText.SENDING;
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = SubmitButtonText.IDLE;
 };
 
 const onFormSubmit = (evt) => {
@@ -102,21 +102,21 @@ const onFormSubmit = (evt) => {
 };
 
 const setUserFormSubmit = () => {
-  uploadForm.addEventListener('submit', onFormSubmit);
+  uploadFormElement.addEventListener('submit', onFormSubmit);
 };
 
 const removeSetUserFormSubmit = () => {
-  uploadForm.removeEventListener('submit', onFormSubmit);
+  uploadFormElement.removeEventListener('submit', onFormSubmit);
 };
 
 function openModalForm() {
-  openModalElement(modalForm);
+  openModalElement(modalFormElement);
 
-  formCloseButton.addEventListener('click', onCloseModalButtonClick);
+  formCloseButtonElement.addEventListener('click', onCloseModalButtonClick);
   document.addEventListener('keydown', onDocumentKeydown);
 
-  inputHashtag.addEventListener('focus', onFieldFocus);
-  commentField.addEventListener('focus', onFieldFocus);
+  inputHashtagElement.addEventListener('focus', onFieldFocus);
+  commentFieldElement.addEventListener('focus', onFieldFocus);
 
   initScale();
   addValidator();
@@ -125,13 +125,13 @@ function openModalForm() {
 }
 
 function closeModalForm() {
-  closeModalElement(modalForm);
+  closeModalElement(modalFormElement);
 
-  formCloseButton.removeEventListener('click', onCloseModalButtonClick);
+  formCloseButtonElement.removeEventListener('click', onCloseModalButtonClick);
   document.removeEventListener('keydown', onDocumentKeydown);
 
-  inputHashtag.removeEventListener('focus', onFieldFocus);
-  commentField.removeEventListener('focus', onFieldFocus);
+  inputHashtagElement.removeEventListener('focus', onFieldFocus);
+  commentFieldElement.removeEventListener('focus', onFieldFocus);
 
   deleteScale();
   removeValidator();
@@ -142,7 +142,7 @@ function closeModalForm() {
 }
 
 const setFileUploadControlEvent = () => {
-  fileUploadControl.addEventListener('change', onFileUploadControlChange);
+  fileUploadControlElement.addEventListener('change', onFileUploadControlChange);
 };
 
 export {setFileUploadControlEvent, closeModalForm};

@@ -1,11 +1,12 @@
-const body = document.querySelector('body');
-const errorSendTemplate = document.querySelector('#error').content.querySelector('.error');
-const errorSendFragment = document.createDocumentFragment();
-const errorToastTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
-const errorGetFragment = document.createDocumentFragment();
-const successGetTemplate = document.querySelector('#success').content.querySelector('.success');
-const successGetFragment = document.createDocumentFragment();
 const ALERT_GET_SHOWTIME = 5000;
+
+const bodyElement = document.querySelector('body');
+const errorSendTemplateElement = document.querySelector('#error').content.querySelector('.error');
+const errorSendFragment = document.createDocumentFragment();
+const errorToastTemplateElement = document.querySelector('#data-error').content.querySelector('.data-error');
+const errorGetFragment = document.createDocumentFragment();
+const successGetTemplateElement = document.querySelector('#success').content.querySelector('.success');
+const successGetFragment = document.createDocumentFragment();
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
@@ -36,32 +37,32 @@ const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const openModalElement = (modalElement) => {
   modalElement.classList.remove('hidden');
-  body.classList.add('modal-open');
+  bodyElement.classList.add('modal-open');
 };
 
 const closeModalElement = (modalElement) => {
   modalElement.classList.add('hidden');
-  body.classList.remove('modal-open');
+  bodyElement.classList.remove('modal-open');
 };
 
 const showAlertSend = () => {
-  const error = errorSendTemplate.cloneNode(true);
+  const errorElement = errorSendTemplateElement.cloneNode(true);
 
-  errorSendFragment.append(error);
-  body.append(errorSendFragment);
+  errorSendFragment.append(errorElement);
+  bodyElement.append(errorSendFragment);
 };
 
 const showToastAlert = (message) => {
-  const error = errorToastTemplate.cloneNode(true);
+  const errorElement = errorToastTemplateElement.cloneNode(true);
 
   if (message) {
-    error.querySelector('.data-error__title').textContent = message;
+    errorElement.querySelector('.data-error__title').textContent = message;
   }
-  errorGetFragment.append(error);
-  body.append(error);
+  errorGetFragment.append(errorElement);
+  bodyElement.append(errorElement);
 
   setTimeout(() => {
-    error.remove();
+    errorElement.remove();
   }, ALERT_GET_SHOWTIME);
 };
 
@@ -70,10 +71,10 @@ const showAlertGet = () => {
 };
 
 const showSuccessSend = () => {
-  const success = successGetTemplate.cloneNode(true);
+  const successElement = successGetTemplateElement.cloneNode(true);
 
-  successGetFragment.append(success);
-  body.append(success);
+  successGetFragment.append(successElement);
+  bodyElement.append(successElement);
 };
 
 const debounce = (callback, timeoutDelay) => {
