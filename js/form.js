@@ -3,7 +3,6 @@ import {addValidator, removeValidator, isFormValidate, setEventsOnInfoModal} fro
 import {initScale, deleteScale} from './scale-photo.js';
 import {createNoUiSlider, destroyNoUiSlider} from './filter-photo.js';
 import {sendData} from './api.js';
-import {getData} from './data.js';
 import {uploadForm, modalForm, photo} from './const.js';
 
 const fileUploadControl = uploadForm.querySelector('.img-upload__input');
@@ -12,7 +11,7 @@ const inputHashtag = modalForm.querySelector('.text__hashtags');
 const commentField = modalForm.querySelector('.text__description');
 const effectsPreviews = modalForm.querySelectorAll('.effects__preview');
 const submitButton = modalForm.querySelector('#upload-submit');
-const {FILE_TYPES} = getData();
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
@@ -21,9 +20,9 @@ const SubmitButtonText = {
 
 const onFileUploadControlChange = () => {
   const file = fileUploadControl.files[0];
-  const fileName = file.type;
+  const fileType = file.type;
 
-  const matches = FILE_TYPES.some((type) => fileName.endsWith(type));
+  const matches = FILE_TYPES.some((type) => fileType.endsWith(type));
 
   if (matches) {
     openModalForm();
