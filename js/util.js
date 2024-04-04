@@ -1,12 +1,11 @@
 const body = document.querySelector('body');
 const errorSendTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorSendFragment = document.createDocumentFragment();
-const errorGetTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
+const errorToastTemplate = document.querySelector('#data-error').content.querySelector('.data-error');
 const errorGetFragment = document.createDocumentFragment();
 const successGetTemplate = document.querySelector('#success').content.querySelector('.success');
 const successGetFragment = document.createDocumentFragment();
 const ALERT_GET_SHOWTIME = 5000;
-const filters = document.querySelector('.img-filters');
 
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(min, max));
@@ -16,24 +15,6 @@ const getRandomInteger = (min, max) => {
 };
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
-
-const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      // eslint-disable-next-line no-console
-      console.error(`Перебраны все числа из диапазона от ${ min } до ${ max }`);
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
-};
 
 const getRandomArrayElements = (array, count) => {
   if (array.length < count) {
@@ -70,15 +51,22 @@ const showAlertSend = () => {
   body.append(errorSendFragment);
 };
 
-const showAlertGet = () => {
-  const error = errorGetTemplate.cloneNode(true);
+const showToastAlert = (message) => {
+  const error = errorToastTemplate.cloneNode(true);
 
+  if (message) {
+    error.querySelector('.data-error__title').textContent = message;
+  }
   errorGetFragment.append(error);
   body.append(error);
 
   setTimeout(() => {
     error.remove();
   }, ALERT_GET_SHOWTIME);
+};
+
+const showAlertGet = () => {
+  showToastAlert();
 };
 
 const showSuccessSend = () => {
@@ -97,13 +85,4 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-const setFiltersClick = (cb) => {
-  filters.addEventListener('click', (evt) => {
-    if (evt.target.matches('.img-filters__button')) {
-      cb();
-    }
-  });
-};
-
-
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, openModalElement, closeModalElement, showAlertSend, showAlertGet, showSuccessSend, getRandomArrayElements, debounce, setFiltersClick};
+export {isEscapeKey, openModalElement, closeModalElement, showAlertSend, showAlertGet, showSuccessSend, getRandomArrayElements, debounce, showToastAlert};

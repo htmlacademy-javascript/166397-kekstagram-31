@@ -11,6 +11,7 @@ const commentsLoader = modalPhoto.querySelector('.comments-loader');
 const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const commentsList = modalPhoto.querySelector('.social__comments');
 const photoCaption = modalPhoto.querySelector('.social__caption');
+
 const MIN_SHOWN_COMMENTS = 5;
 let commentsForRender = [];
 let startCommentCount = 0;
@@ -63,12 +64,9 @@ const renderComments = (commentsArray) => {
 const renderModal = ({url, likes, description, comments}) => {
   bigPhoto.src = url;
   bigPhoto.alt = description;
+  photoCaption.textContent = description;
   likesCount.textContent = likes;
-  if (comments.length < MIN_SHOWN_COMMENTS) {
-    shownCommentsCount.textContent = comments.length;
-  } else {
-    shownCommentsCount.textContent = MIN_SHOWN_COMMENTS;
-  }
+  shownCommentsCount.textContent = (comments.length < MIN_SHOWN_COMMENTS) ? comments.length : MIN_SHOWN_COMMENTS;
 
   totalCommentsCount.textContent = comments.length;
 
@@ -77,7 +75,6 @@ const renderModal = ({url, likes, description, comments}) => {
   } else {
     commentsLoader.classList.add('hidden');
   }
-  photoCaption.textContent = description;
 };
 
 const onThumbnailClick = (evt) => {
