@@ -75,6 +75,7 @@ const destroyNoUiSlider = () => {
   sliderElement.noUiSlider.destroy();
   filtersElement.removeEventListener('change', onFilterChange);
   sliderContainerElement.classList.remove('hidden');
+  currentFilter = 'none';
 };
 
 const setNoUiSlider = () => {
