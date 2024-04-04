@@ -1,5 +1,6 @@
-const uploadForm = document.querySelector('.img-upload__form');
-const modalForm = uploadForm.querySelector('.img-upload__overlay');
-const photo = modalForm.querySelector('.img-upload__preview img');
+const uploadFormElement = document.querySelector('.img-upload__form');
+const modalFormElement = uploadFormElement.querySelector('.img-upload__overlay');
+const photoElement = modalFormElement.querySelector('.img-upload__preview img');
+const sliderElement = modalFormElement.querySelector('.effect-level__slider');
 
-export {uploadForm, modalForm, photo};
+export {uploadFormElement, modalFormElement, photoElement, sliderElement};

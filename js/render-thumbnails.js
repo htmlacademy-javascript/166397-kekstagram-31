@@ -1,14 +1,14 @@
 import {onThumbnailClick} from './photo-modal.js';
 
-const thumbnailsList = document.querySelector('.pictures');
-const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const thumbnailsListElement = document.querySelector('.pictures');
+const thumbnailTemplateElement = document.querySelector('#picture').content.querySelector('.picture');
 
 const thumbnailsFragment = document.createDocumentFragment();
 
 const removeThumbnails = () => {
-  const currentThumbnails = thumbnailsList.querySelectorAll('.picture');
+  const currentThumbnailsElements = thumbnailsListElement.querySelectorAll('.picture');
 
-  currentThumbnails.forEach((thumbnail) => {
+  currentThumbnailsElements.forEach((thumbnail) => {
     thumbnail.remove();
   });
 };
@@ -17,19 +17,19 @@ const renderThumbnails = (thumbnails) => {
   removeThumbnails();
 
   thumbnails.forEach(({id, url, description, likes, comments}) => {
-    const thumbnail = thumbnailTemplate.cloneNode(true);
-    const thumbnailsImage = thumbnail.querySelector('.picture__img');
+    const thumbnailElement = thumbnailTemplateElement.cloneNode(true);
+    const thumbnailImageElement = thumbnailElement.querySelector('.picture__img');
 
-    thumbnail.dataset.id = id;
-    thumbnailsImage.src = url;
-    thumbnailsImage.alt = description;
-    thumbnail.querySelector('.picture__likes').textContent = likes;
-    thumbnail.querySelector('.picture__comments').textContent = comments.length;
+    thumbnailElement.dataset.id = id;
+    thumbnailImageElement.src = url;
+    thumbnailImageElement.alt = description;
+    thumbnailElement.querySelector('.picture__likes').textContent = likes;
+    thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
 
-    thumbnailsFragment.append(thumbnail);
+    thumbnailsFragment.append(thumbnailElement);
   });
-  thumbnailsList.append(thumbnailsFragment);
-  thumbnailsList.addEventListener('click', onThumbnailClick);
+  thumbnailsListElement.append(thumbnailsFragment);
+  thumbnailsListElement.addEventListener('click', onThumbnailClick);
 };
 
 export {renderThumbnails};

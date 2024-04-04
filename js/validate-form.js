@@ -1,21 +1,22 @@
 import {isEscapeKey} from './util.js';
-import {uploadForm, modalForm} from './const.js';
+import {uploadFormElement, modalFormElement} from './const.js';
 
-const inputHashtag = modalForm.querySelector('.text__hashtags');
-const commentField = modalForm.querySelector('.text__description');
 const MAX_COMMENT_LENGTH = 140;
 const MAX_HASHTAG_COUNT = 5;
-const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
-let pristine;
-let infoModal;
 
 const ErrorHashtagMessages = {
   INVALID_HASHTAG: 'введён невалидный хэштег',
   HASHTAG_REPEAT: 'хэштеги повторяются',
   HASHTAG_NUMBER_EXCEEDED: 'превышено количество хэштегов'
 };
-
 const ERROR_COMMENT_MESSAGE = 'длина комментария больше 140 символов';
+
+const hashtagRegExp = /^#[a-zа-яё0-9]{1,19}$/i;
+let pristine;
+let infoModalElement;
+
+const inputHashtagElement = modalFormElement.querySelector('.text__hashtags');
+const commentFieldElement = modalFormElement.querySelector('.text__description');
 
 const checkArrayOfHashtags = (hashtagsArray) => hashtagsArray.every((hashtag) => hashtagRegExp.test(hashtag));
 
@@ -56,15 +57,15 @@ const getErrorMessage = (value) => {
 const validateComment = (value) => value.length <= MAX_COMMENT_LENGTH;
 
 const addValidator = () => {
-  pristine = new Pristine(uploadForm, {
+  pristine = new Pristine(uploadFormElement, {
     classTo: 'img-upload__field-wrapper',
     errorTextParent: 'img-upload__field-wrapper',
     errorTextTag: 'div',
     errorTextClass: 'img-upload__field-wrapper--error'
   });
 
-  pristine.addValidator(inputHashtag, validateHashtag, getErrorMessage);
-  pristine.addValidator(commentField, validateComment, ERROR_COMMENT_MESSAGE);
+  pristine.addValidator(inputHashtagElement, validateHashtag, getErrorMessage);
+  pristine.addValidator(commentFieldElement, validateComment, ERROR_COMMENT_MESSAGE);
 };
 
 const removeValidator = () => {
@@ -78,16 +79,16 @@ const onDocumentKeydown = (evt) => {
 };
 
 function closeInfoModal() {
-  infoModal.remove();
+  infoModalElement.remove();
   document.removeEventListener('keydown', onDocumentKeydown);
 }
 
 const setEventsOnInfoModal = (resultSubmit) => {
-  infoModal = document.querySelector(`.${resultSubmit}`);
+  infoModalElement = document.querySelector(`.${resultSubmit}`);
 
   document.addEventListener('keydown', onDocumentKeydown);
 
-  infoModal.addEventListener('click', (evt) => {
+  infoModalElement.addEventListener('click', (evt) => {
     if (evt.target.closest(`.${resultSubmit}__inner`) && !evt.target.matches(`.${resultSubmit}__button`)) {
       evt.stopPropagation();
     } else {
